@@ -32,3 +32,14 @@ install(DIRECTORY ${ImGuizmo_SOURCE_DIR}/
     DESTINATION include/ImGuizmo
     FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
 )
+install(EXPORT ImGuizmoTargets
+    NAMESPACE ImGuizmo::
+    DESTINATION lib/cmake/ImGuizmo
+)
+
+if (imgui)
+    target_link_libraries(ImGuizmo PRIVATE imgui)
+else() 
+    message(FATAL_ERROR "ImGuizmo requires imgui to be defined")
+endif()
+
