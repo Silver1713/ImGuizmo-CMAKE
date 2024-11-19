@@ -10,9 +10,8 @@ project(ImGuizmo)
 
 set(ImGuizmo_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-
 file(GLOB_RECURSE SOURCES "*.cpp" "*.c" "*.hpp")
-file(GLOB_RECURSE HEADERS "*.h")
+file(GLOB_RECURSE HEADERS "*.h" "*.hpp")
 
 add_library(ImGuizmo STATIC ${SOURCES} ${HEADERS})
 
@@ -32,9 +31,4 @@ install(TARGETS ImGuizmo
 install(DIRECTORY ${ImGuizmo_SOURCE_DIR}/
     DESTINATION include/ImGuizmo
     FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
-)
-install(EXPORT ImGuizmoTargets
-    NAMESPACE ImGuizmo::
-    FILE ImGuizmoConfig.cmake
-    DESTINATION lib/cmake/ImGuizmo
 )

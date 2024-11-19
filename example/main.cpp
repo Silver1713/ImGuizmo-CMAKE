@@ -689,6 +689,7 @@ int main(int, char**)
    ImApp::ImApp imApp;
 
    ImApp::Config config;
+
    config.mWidth = 1280;
    config.mHeight = 720;
    //config.mFullscreen = true;
