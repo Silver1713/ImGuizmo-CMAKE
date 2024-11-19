@@ -36,7 +36,7 @@ install(EXPORT ImGuizmoTargets
     NAMESPACE ImGuizmo::
     DESTINATION lib/cmake/ImGuizmo
 )
-
+find_library(imgui imgui)
 if (imgui)
     target_link_libraries(ImGuizmo PRIVATE imgui)
 else() 
