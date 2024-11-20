@@ -14,12 +14,12 @@ project(ImGuizmo)
 
 
 file(GLOB_RECURSE IMGUIZMO_SOURCES
-    "ImGuizmo/*.cpp"
+    "*.cpp"
 )
 
 file(GLOB IMGUIZMO_HEADERS
-    "ImGuizmo/*.h"
-    "ImGuizmo/*.hpp"
+    "*.h"
+    "*.hpp"
 )
 
 add_library(ImGuizmo STATIC ${IMGUIZMO_SOURCES} ${IMGUIZMO_HEADERS})
