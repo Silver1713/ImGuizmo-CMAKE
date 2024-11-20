@@ -3,43 +3,67 @@
 # Author: Yeo Jia Hao
 # Date: 2024-11-12
 # Description: CMakeLists.txt conversion for ImGuizmo with FetchContent setup
+# This cmake file prepares the ImGuizmo library for use in a CMake project through FetchContent
+# it will be uploaded into the remote repository for students to use through FetchContent
 
-cmake_minimum_required(VERSION 3.0)
+
+cmake_minimum_required(VERSION 3.11)
 project(ImGuizmo)
 
+# Add static library target
 
-set(ImGuizmo_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-file(GLOB_RECURSE SOURCES "*.cpp" "*.c" "*.hpp")
-file(GLOB_RECURSE HEADERS "*.h" "*.hpp")
+file(GLOB_RECURSE IMGUIZMO_SOURCES
+    "ImGuizmo/*.cpp"
+)
 
-add_library(ImGuizmo STATIC ${SOURCES} ${HEADERS})
+file(GLOB IMGUIZMO_HEADERS
+    "ImGuizmo/*.h"
+    "ImGuizmo/*.hpp"
+)
 
-target_include_directories(ImGuizmo PUBLIC
-    $<BUILD_INTERFACE:${ImGuizmo_SOURCE_DIR}>
+add_library(ImGuizmo STATIC ${IMGUIZMO_SOURCES} ${IMGUIZMO_HEADERS})
+
+target_include_directories(ImGuizmo PUBLIC 
+    $<BUILD_INTERFACE>:${CMAKE_CURRENT_SOURCE_DIR}
     $<INSTALL_INTERFACE:include>
 )
 
-export(TARGETS ImGuizmo NAMESPACE ImGuizmo:: FILE ImGuizmoConfig.cmake)
+target_compile_features(ImGuizmo PUBLIC cxx_std_17)
+
+include(CMakePackageConfigHelpers)
 
 install(TARGETS ImGuizmo
     EXPORT ImGuizmoTargets
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
 )
-install(DIRECTORY ${ImGuizmo_SOURCE_DIR}/
-    DESTINATION include/ImGuizmo
-    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
-)
+
+install(FILES ${IMGUIZMO_HEADERS} DESTINATION include)
+
 install(EXPORT ImGuizmoTargets
-    NAMESPACE ImGuizmo::
+    FILE ImGuizmoTargets.cmake
     DESTINATION lib/cmake/ImGuizmo
 )
-find_library(imgui imgui)
-if (imgui)
-    target_link_libraries(ImGuizmo PRIVATE imgui)
-else() 
-    message(FATAL_ERROR "ImGuizmo requires imgui to be defined")
-endif()
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/ImGuizmoConfigVersion.cmake
+    VERSION 1.0
+    COMPATIBILITY AnyNewerVersion
+)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ImGuizmoConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/ImGuizmoConfig.cmake
+    INSTALL_DESTINATION lib/cmake/ImGuizmo
+)
+
+install(
+    FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/ImGuizmoConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/ImGuizmoConfigVersion.cmake"
+    DESTINATION lib/cmake/ImGuizmo
+)
 

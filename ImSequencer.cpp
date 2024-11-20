@@ -24,9 +24,11 @@
 // SOFTWARE.
 //
 #include "ImSequencer.h"
-#include "imgui.h"
-#include "imgui_internal.h"
+
 #include <cstdlib>
+
+#include "example/imgui.h"
+#include "example/imgui_internal.h"
 
 namespace ImSequencer
 {
